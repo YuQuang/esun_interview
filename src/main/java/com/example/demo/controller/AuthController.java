@@ -11,7 +11,7 @@ import com.example.demo.model.dto.RegistryDTO;
 import com.example.demo.service.UserService;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/auth")
 public class AuthController {
     private final UserService userService;
 

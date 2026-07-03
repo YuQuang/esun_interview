@@ -1,6 +1,6 @@
 <!DOCTYPE html>
     <html lang="en">
-    <head th:replace="~{fragments/header :: header('首頁')}"></head>
+    <head th:replace="~{fragments/header :: header('登入')}"></head>
     <body class="bg-gray-100 min-h-screen flex items-center justify-center">
         <form th:action="@{/login}" method="post" class="space-y-5">
             <div id="app" class="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
@@ -8,20 +8,20 @@
                     <div class="text-center">
                         <h1 class="text-3xl font-bold text-gray-800">Sign In</h1>
                         <p class="text-gray-500 mt-2">
-                            {{ message }}
+                            Welcome back! Please login to your account.
                         </p>
                     </div>
 
                     <div>
                         <label for="username" class="block text-sm font-medium text-gray-700 mb-2">
-                            username
+                            phone number
                         </label>
 
                         <input
-                            v-model="username"
+                            v-model="phone_number"
                             id="username"
                             name="username"
-                            placeholder="username"
+                            placeholder="0912345678"
                             class="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition">
                     </div>
 
@@ -62,36 +62,18 @@
     <script>
         const app = Vue.createApp({
             data() {
-                return {
-                    username: '',
-                    password: '',
-                    message: 'Welcome back! Please login to your account.'
-                };
+                return {};
             },
-            methods: {
-                async handleLogin() {
-                    await axios.post(
-                        "login",
-                        {
-                            username: this.username,
-                            password: this.password
-                        }
-                    ).then((response) => {
-                        if (response.data.success) {
-                            this.message = "Login successful!";
-                        } else {
-                            this.message = "Invalid username or password.";
-                        }
-                    }).catch((error) => {
-                        console.error(error);
-                        this.message = "An error occurred. Please try again.";
-                    });
-                }
-            },
+            methods: {},
             created() {
                 const urlParams = new URLSearchParams(window.location.search)
                 if (urlParams.get("error") != null) {
-                    this.message = "Username or password is incorrect.";
+                    Swal.fire({
+                        title: 'Error!',
+                        text: '帳號或密碼錯誤',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                    })
                 }
             },
         });
