@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.security;
 
 import com.example.demo.model.entity.UserEntity;
 import com.example.demo.repository.UserRepository;
@@ -19,14 +19,14 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username)
+    public UserDetails loadUserByUsername(String phoneNumber)
             throws UsernameNotFoundException {
 
-        UserEntity user = userRepository.findByUsername(username)
+        UserEntity user = userRepository.findByPhoneNumber(phoneNumber)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
+                user.getPhoneNumber(),
                 user.getPassword(),
                 List.of(new SimpleGrantedAuthority("USER"))
         );

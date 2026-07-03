@@ -23,8 +23,8 @@ public class UserService {
 
     public void register(RegistryDTO request) {
 
-        if (userRepository.existsByUsername(request.getUsername())) {
-            throw new IllegalArgumentException("Username already exists.");
+        if (userRepository.existsByPhoneNumber(request.getPhoneNumber())) {
+            throw new IllegalArgumentException("User already exists.");
         }
 
         UserEntity user = new UserEntity();

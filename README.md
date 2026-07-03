@@ -28,10 +28,16 @@ mvn spring-boot:run
 1. 使用 Spring Boot 搭建相關應用程式。
 1. 使用 RESTful API 風格建立後端服務。
 1. 使用 Maven 或 Gradle 做為專案建立的工具。
+    `本專案使用 Maven`
 1. 透過 Stored Procedure 存取資料庫。
+    `方法: 撰寫 Stored Procedure file 放置於 src\main\resources\db\sp`
 1. 需同時異動多個資料表時,請實作 Transaction,避免資料錯亂。
+    `方法: 於租借及歸還時會同時異動 inventory 跟 borrowing record 需要使用 Transaction`
 1. 資料庫的 DDL 和 DML 請存放在專案下的\DB 資料夾內提供
+    `方法: 撰寫 Migration file 放置於 src\main\resources\db\migration`
 1. 需防止 SQL Injection 以及 XSS 攻擊。
+    `方法: 使用 JPA 防止 SQL Injection`
+
 
 
 ## Dependencies
