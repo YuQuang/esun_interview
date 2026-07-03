@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.security;
 
 import jakarta.servlet.http.*;
 import org.springframework.security.core.AuthenticationException;
