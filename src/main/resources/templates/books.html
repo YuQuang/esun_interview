@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head th:replace="~{fragments/header :: header('庫存')}"></head>
+    <body class="bg-gray-100">
+        <div id="app" class="p-6">
+
+            <h1 class="text-2xl font-bold mb-4">Book List</h1>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+                <div
+                v-for="book in books"
+                :key="book.inventory_id"
+                class="grid grid-cols-1 bg-white border rounded-lg p-4 gap-1 shadow"
+                >
+
+                <div class="text-lg font-semibold">
+                    {{ book.title }}
+                </div>
+                <div class="text-md font-semibold">
+                    {{ book.author }}
+                </div>
+                <div class="text-sm font-semibold">
+                    {{ book.isbn }}
+                </div>
+
+                <p class="mt-2 text-sm">
+                    Status:
+                    <span :class="book.status === 'AVAILABLE'
+                    ? 'text-green-600'
+                    : 'text-red-500'">
+                    {{ book.status }}
+                    </span>
+                </p>
+
+                <button
+                    class="mt-4 px-4 py-2 rounded text-white"
+                    :class="book.status === 'AVAILABLE'
+                    ? 'bg-blue-500 hover:bg-blue-600'
+                    : 'bg-gray-400 cursor-not-allowed'"
+                    :disabled="book.status !== 'AVAILABLE'"
+                    @click="loanBook(book.inventory_id)"
+                >
+                    Rent
+                </button>
+
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script>
+        const { createApp } = Vue
+
+        createApp({
+        data() {
+            return {
+            books: []
+            }
+        },
+
+        mounted() {
+            this.fetchBooks()
+        },
+
+        methods: {
+
+            async fetchBooks() {
+                try {
+                    const res = await axios.get("/api/books")
+                    this.books = res.data
+                } catch (err) {
+                    console.error("fetchBooks error:", err)
+                }
+            },
+
+            async loanBook(inventoryId) {
+                try {
+                    await axios.post(`/api/books/${inventoryId}/loan`)
+                    this.fetchBooks()
+                } catch (err) {
+                    console.error("loanBook error:", err)
+                }
+            }
+
+        }
+        }).mount("#app")
+        </script>
+    </body>
+</html>
