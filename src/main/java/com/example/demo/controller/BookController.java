@@ -52,8 +52,7 @@ public class BookController {
 
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
-    public List<BookDTO> getBooks(
-        Authentication authentication) {
+    public List<BookDTO> getBooks() {
         List<BookDTO> books = bookService.getBooks();
         if(books.isEmpty()) {
             throw new IllegalArgumentException("No books found");

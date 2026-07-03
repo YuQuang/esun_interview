@@ -59,7 +59,7 @@ public class BookService {
         }
         book.get().setStatus(BookStatus.AVAILABLE);
         
-        var borrowingRecordOptional = borrowingRecordRepository.findByInventoryIDAndUserID(bookID, userID);
+        var borrowingRecordOptional = borrowingRecordRepository.findByInventoryIDAndUserIDAndReturnTimeIsNull(bookID, userID);
         if (borrowingRecordOptional.isEmpty()) {
             throw new IllegalArgumentException("Borrowing record not found");
         }
