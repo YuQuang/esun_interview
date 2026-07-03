@@ -14,7 +14,6 @@
 ## Outline
 1. [Introduction](#Introduction)
 1. [Start](#Start)
-1. [PostgreSQL](#PostgreSQL)
 1. [Tech](#Tech)
 1. [Dependencies](#Dependencies)
 
@@ -24,15 +23,9 @@
 
 
 ## Start
-``` bash
-# Run
-mvn spring-boot:run
-# Then go to http://localhost:8080
-```
+按照下列步驟，先運行 DB，接著運行 DB Migration，最後運行 Spring Boot。
 
-
-
-## PostgreSQL
+### Prepare PostgreSQL
 拉取 [PostgreSQL Image](https://hub.docker.com/_/postgres) 然後 Run 一個 container
 ``` bash
 # Pull image
@@ -40,6 +33,19 @@ docker pull postgres:19beta1-trixie
 
 # Run image
 docker run -itd -p 5432:5432 --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword postgres:19beta1-trixie
+```
+### DB Migration
+若有 CLI 工具可直接使用，或是其他 migration tool，或是透過 DBeaver 之類的工具運行。
+``` bash
+psql -h localhost -U postgres -p 5432 -d postgres -a -f /db/migration/{Replace with file name}.sql
+```
+
+### Run server
+最後運行伺服器並且登入以下網址。
+``` bash
+# Run
+mvn spring-boot:run
+# Then go to http://localhost:8080
 ```
 
 
