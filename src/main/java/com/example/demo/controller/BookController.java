@@ -32,4 +32,17 @@ public class BookController {
             bookLoaningDTO
         );
     }
+
+    @PostMapping("/{id}/return")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void returnBook(
+        @PathVariable Long id,
+        Authentication authentication) {
+        BookLoaningDTO bookLoaningDTO = new BookLoaningDTO();
+        bookLoaningDTO.setInventoryID(id);
+        bookService.returnBook(
+            authentication.getName(),
+            bookLoaningDTO
+        );
+    }
 }

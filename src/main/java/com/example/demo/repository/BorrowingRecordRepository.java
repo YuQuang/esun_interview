@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface BorrowingRecordRepository extends JpaRepository<BorrowingRecordEntity, Long> {
-    Optional<BorrowingRecordEntity> findByID(Long id);
+    Optional<BorrowingRecordEntity> findByInventoryIDAndUserID(Long inventoryID, Long userID);
 }
