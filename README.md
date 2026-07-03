@@ -25,8 +25,11 @@
 
 ## Start
 ``` bash
+# Run
 mvn spring-boot:run
+# Then go to http://localhost:8080
 ```
+
 
 
 ## PostgreSQL
