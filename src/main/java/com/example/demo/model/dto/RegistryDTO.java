@@ -6,8 +6,10 @@ public class RegistryDTO {
 
     @JsonProperty("username")
     private String username;
+    
     @JsonProperty("password")
     private String password;
+
     @JsonProperty("phone_number")
     private String phoneNumber;
 

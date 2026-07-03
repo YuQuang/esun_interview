@@ -20,6 +20,11 @@ public class BorrowingRecordEntity {
     @Column(name = "inventory_id")
     private Long inventoryID;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "inventory_id", referencedColumnName = "inventory_id",
+                insertable = false, updatable = false)
+    private InventoryEntity inventory;
+
     @CreationTimestamp
     @Column(name = "borrowing_time")
     private LocalDateTime borrowingTime;
@@ -28,14 +33,17 @@ public class BorrowingRecordEntity {
     private LocalDateTime returnTime;
 
     // getter / setter
-    public Long getID() { return id; }
-    public void setID(Long id) { this.id = id; }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
     public Long getUserID() { return userID; }
     public void setUserID(Long userID) { this.userID = userID; }
 
     public Long getInventoryID() { return inventoryID; }
     public void setInventoryID(Long inventoryID) { this.inventoryID = inventoryID; }
+
+    public InventoryEntity getInventory() { return inventory; }
+    public void setInventory(InventoryEntity inventory) { this.inventory = inventory; }
 
     public LocalDateTime getBorrowingTime() { return borrowingTime; }
     public void setBorrowingTime(LocalDateTime borrowingTime) { this.borrowingTime = borrowingTime; }

@@ -7,7 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.example.demo.service.CustomAuthenticationEntryPoint;
+import com.example.demo.security.CustomAuthenticationEntryPoint;
 
 @Configuration
 public class SecurityConfig {
@@ -38,7 +38,7 @@ public class SecurityConfig {
             .formLogin(form -> form
                 .loginPage("/login")          // 使用自訂 login page
                 .loginProcessingUrl("/login")  // form post 的 endpoint
-                .defaultSuccessUrl("/home", true) // 登入成功導向
+                .defaultSuccessUrl("/books", true) // 登入成功導向
                 .failureUrl("/login?error")    // 登入失敗
                 .permitAll()
             )

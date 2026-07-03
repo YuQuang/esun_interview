@@ -1,9 +1,11 @@
 package com.example.demo.service;
 
 import java.util.Optional;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.demo.model.dto.BookDTO;
 import com.example.demo.model.dto.BookLoaningDTO;
 import com.example.demo.model.entity.BorrowingRecordEntity;
 import com.example.demo.model.entity.InventoryEntity;
@@ -57,7 +59,7 @@ public class BookService {
         }
         book.get().setStatus(BookStatus.AVAILABLE);
         
-        var borrowingRecordOptional = borrowingRecordRepository.findByInventoryIDAndUserID(bookID, userID);
+        var borrowingRecordOptional = borrowingRecordRepository.findByInventoryIDAndUserIDAndReturnTimeIsNull(bookID, userID);
         if (borrowingRecordOptional.isEmpty()) {
             throw new IllegalArgumentException("Borrowing record not found");
         }
@@ -95,5 +97,18 @@ public class BookService {
         borrowingRecord.setInventoryID(bookID);
         borrowingRecord.setUserID(userID);
         borrowingRecordRepository.save(borrowingRecord);
+    }
+
+    public List<BookDTO> getBooks() {
+        return inventoryRepository.findAll().stream().map(inventoryEntity -> {
+            BookDTO bookDTO = new BookDTO();
+            bookDTO.setInventoryID(inventoryEntity.getInventoryID());
+            bookDTO.setTitle(inventoryEntity.getBook().getName());
+            bookDTO.setAuthor(inventoryEntity.getBook().getAuthor());
+            bookDTO.setIsbn(inventoryEntity.getIsbn());
+            bookDTO.setStoreTime(inventoryEntity.getStoreTime());
+            bookDTO.setStatus(inventoryEntity.getStatus());
+            return bookDTO;
+        }).toList();
     }
 }

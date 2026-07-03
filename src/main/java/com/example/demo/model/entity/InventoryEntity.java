@@ -28,6 +28,11 @@ public class InventoryEntity {
     @Enumerated(EnumType.STRING)
     private BookStatus status;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "isbn", referencedColumnName = "isbn",
+                insertable = false, updatable = false)
+    private BookEntity book;
+
     // getter / setter
     public Long getInventoryID() { return inventoryID; }
     public void setInventoryID(Long inventoryID) { this.inventoryID = inventoryID; }
@@ -40,4 +45,7 @@ public class InventoryEntity {
 
     public BookStatus getStatus() { return status; }
     public void setStatus(BookStatus status) { this.status = status; }
+
+    public BookEntity getBook() { return book; }
+    public void setBook(BookEntity book) { this.book = book; }
 }
