@@ -4,6 +4,21 @@
     <body class="bg-gray-100">
         <div th:replace="~{fragments/navbar}"></div>
         <div id="app" class="p-6">
+            
+            <div class="w-full flex justify-between p-4">
+                <div></div>
+                <div class="grid grid-cols-2 gap-5">
+                    <button class="px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-600">
+                        新增庫存
+                    </button>
+                    <button 
+                    class="px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-600"
+                    @click="createBook()">
+                        新增書籍
+                    </button>
+                </div>
+            </div>
+
             <h1 class="text-2xl font-bold mb-4">在庫書籍</h1>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div
@@ -32,12 +47,12 @@
                 </p>
 
                 <button
-                    class="mt-4 px-4 py-2 rounded text-white"
-                    :class="book.status === 'AVAILABLE'
-                    ? 'bg-blue-500 hover:bg-blue-600'
-                    : 'bg-gray-400 cursor-not-allowed'"
-                    :disabled="book.status !== 'AVAILABLE'"
-                    @click="loanBook(book.inventory_id)"
+                class="mt-4 px-4 py-2 rounded text-white"
+                :class="book.status === 'AVAILABLE'
+                ? 'bg-blue-500 hover:bg-blue-600'
+                : 'bg-gray-400 cursor-not-allowed'"
+                :disabled="book.status !== 'AVAILABLE'"
+                @click="loanBook(book.inventory_id)"
                 >
                     租借
                 </button>
@@ -131,6 +146,48 @@
                     }
                 },
 
+                async createBook() {
+                    const { value: formValues } = await Swal.fire({
+                        title: "新增書籍",
+                        html: `
+                            <div class="grid grid-col-1 justify-items-center gap-3">
+                                <div>書名(必填)</div>
+                                <input id="create-book-name" class="w-2/3 text-center border-solid border-black border-2 rounded-xl">
+                                <div>ISBN(必填13位數字)</div>
+                                <input id="create-book-isbn" class="w-2/3 text-center border-solid border-black border-2 rounded-xl">
+                                <div>作者</div>
+                                <input id="create-book-author" class="w-2/3 text-center border-solid border-black border-2 rounded-xl">
+                                <div>介紹</div>
+                                <textarea id="create-book-introduction" class="w-2/3 border-solid border-black border-2 rounded-xl"></textarea>
+                            </div>
+                        `,
+                        focusConfirm: false,
+                        preConfirm: () => {
+                            return {
+                                "name": document.getElementById("create-book-name").value,
+                                "isbn": document.getElementById("create-book-isbn").value,
+                                "author": document.getElementById("create-book-author").value,
+                                "introduction": document.getElementById("create-book-introduction").value,
+                            };
+                        }
+                    });
+                    
+
+                    try {
+                        await axios.post(`/api/books`, formValues)
+                        await Swal.fire({
+                            title: "創建成功",
+                            text: "新增書籍成功",
+                            icon: "success"
+                        });
+                    } catch (err) {
+                        await Swal.fire({
+                            title: "新增失敗",
+                            text: err?.response?.data?.errors[0]?.defaultMessage || "資料不正確",
+                            icon: "error"
+                        });
+                    }
+                }
             }
         }).mount("#app")
         </script>
