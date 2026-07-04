@@ -5,8 +5,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.example.demo.model.dto.BookDTO;
+import com.example.demo.model.dto.InventoryDTO;
 import com.example.demo.model.dto.BookLoaningDTO;
+import com.example.demo.model.dto.CreateBookDTO;
+import com.example.demo.model.entity.BookEntity;
 import com.example.demo.model.entity.BorrowingRecordEntity;
 import com.example.demo.model.entity.InventoryEntity;
 import com.example.demo.model.enums.BookStatus;
@@ -15,6 +17,7 @@ import com.example.demo.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
 
+import com.example.demo.repository.BookRepository;
 import com.example.demo.repository.BorrowingRecordRepository;
 
 @Service
@@ -23,15 +26,18 @@ public class BookService {
     private final InventoryRepository inventoryRepository;
     private final BorrowingRecordRepository borrowingRecordRepository;
     private final UserRepository userRepository;
+    private final BookRepository bookRepository;
 
     public BookService(
         InventoryRepository inventoryRepository,
         BorrowingRecordRepository borrowingRecordRepository,
-        UserRepository userRepository
+        UserRepository userRepository,
+        BookRepository bookRepository
     ) {
         this.inventoryRepository = inventoryRepository;
         this.borrowingRecordRepository = borrowingRecordRepository;
         this.userRepository = userRepository;
+        this.bookRepository = bookRepository;
     }
 
     @Transactional
@@ -99,9 +105,20 @@ public class BookService {
         borrowingRecordRepository.save(borrowingRecord);
     }
 
-    public List<BookDTO> getBooks() {
+    public void createBooks(
+        CreateBookDTO createBookDTO
+    ){
+        BookEntity bookEntity = new BookEntity();
+        bookEntity.setAuthor(createBookDTO.getAuthor());
+        bookEntity.setIsbn(createBookDTO.getIsbn());
+        bookEntity.setName(createBookDTO.getName());
+        bookEntity.setIntroduction(createBookDTO.getIntroduction());
+        bookRepository.save(bookEntity);
+    }
+
+    public List<InventoryDTO> getBooks() {
         return inventoryRepository.findAll().stream().map(inventoryEntity -> {
-            BookDTO bookDTO = new BookDTO();
+            InventoryDTO bookDTO = new InventoryDTO();
             bookDTO.setInventoryID(inventoryEntity.getInventoryID());
             bookDTO.setTitle(inventoryEntity.getBook().getName());
             bookDTO.setAuthor(inventoryEntity.getBook().getAuthor());

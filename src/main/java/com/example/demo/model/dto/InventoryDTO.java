@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
-public class BookDTO {
+public class InventoryDTO {
     
     @JsonProperty("inventory_id")
     private Long inventoryID;

@@ -7,7 +7,6 @@ import jakarta.persistence.*;
 public class BookEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "isbn")
     private String isbn;
 
@@ -21,8 +20,8 @@ public class BookEntity {
     private String introduction;
 
     // getter / setter
-    public String getId() { return isbn; }
-    public void setId(String isbn) { this.isbn = isbn; }
+    public String getIsbn() { return isbn; }
+    public void setIsbn(String isbn) { this.isbn = isbn; }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
