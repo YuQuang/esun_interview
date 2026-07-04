@@ -22,16 +22,9 @@ public class CreateInventoryDTO {
     @JsonProperty("store_time")
     private LocalDateTime storeTime;
 
-    @JsonProperty("status")
-    @Enumerated(EnumType.STRING)
-    private BookStatus status;
-
     public String getIsbn() { return isbn; }
     public void setIsbn(String isbn) { this.isbn = isbn; }
 
     public LocalDateTime getStoreTime() { return storeTime; }
     public void setStoreTime(LocalDateTime storeTime) { this.storeTime = storeTime; }
-
-    public BookStatus getStatus() { return status; }
-    public void setStatus(BookStatus status) { this.status = status; }
 }

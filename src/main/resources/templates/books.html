@@ -8,7 +8,9 @@
             <div class="w-full flex justify-between p-4">
                 <div></div>
                 <div class="grid grid-cols-2 gap-5">
-                    <button class="px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-600">
+                    <button
+                    class="px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-600"
+                    @click="createInventory()">
                         新增庫存
                     </button>
                     <button 
@@ -187,7 +189,42 @@
                             icon: "error"
                         });
                     }
-                }
+                },
+            
+                async createInventory() {
+                    const { value: formValues } = await Swal.fire({
+                        title: "新增庫存",
+                        html: `
+                            <div class="grid grid-col-1 justify-items-center gap-3">
+                                <div>如未先添加書籍資訊請先新增書籍</div>
+                                <div>ISBN(必填13位數字)</div>
+                                <input id="create-inventory-isbn" class="w-2/3 text-center border-solid border-black border-2 rounded-xl">
+                            </div>
+                        `,
+                        focusConfirm: false,
+                        preConfirm: () => {
+                            return {
+                                "isbn": document.getElementById("create-inventory-isbn").value
+                            };
+                        }
+                    });
+
+                    try {
+                        await axios.post(`/api/inventory`, formValues)
+                        await Swal.fire({
+                            title: "創建成功",
+                            text: "新增庫存成功",
+                            icon: "success"
+                        });
+                        this.fetchBooks();
+                    } catch (err) {
+                        await Swal.fire({
+                            title: "新增失敗",
+                            text: err?.response?.data?.errors[0]?.defaultMessage || "資料不正確",
+                            icon: "error"
+                        });
+                    }
+                },
             }
         }).mount("#app")
         </script>
